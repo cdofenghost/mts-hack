@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, APIRouter
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 import pandas as pd
 from .schemas import PredictRequest, WeatherData
 import io
@@ -57,7 +57,7 @@ async def predict(request: PredictRequest):
     # ТУТ МОДЕЛЬ СОЗДАЕТ csv
 
     # Загружаем предсказания из файла
-    prediction_path = "app/backend/output/prediction.csv"
+    prediction_path = "backend/output/prediction.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
@@ -126,3 +126,9 @@ async def predict_with_full(request: WeatherData):
         })
 
     return {"predictions": result}
+
+@router.get("/index", response_class=HTMLResponse)
+async def get_index():
+    with open("frontend/index.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
