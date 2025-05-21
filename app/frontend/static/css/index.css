@@ -1,0 +1,169 @@
+@import url('../fonts/Web/Compact/MTSCompact-Black/MTSCompact-Black.css');
+@import url('../fonts/Web/Compact/MTSCompact-Bold/MTSCompact-Bold.css');
+@import url('../fonts/Web/Compact/MTSCompact-Medium/MTSCompact-Medium.css');
+@import url('../fonts/Web/Compact/MTSCompact-Regular/MTSCompact-Regular.css');
+
+@import url('../fonts/Web/Extended/MTSExtended-Black/MTSExtended-Black.css');
+@import url('../fonts/Web/Extended/MTSExtended-Bold/MTSExtended-Bold.css');
+@import url('../fonts/Web/Extended/MTSExtended-Medium/MTSExtended-Medium.css');
+@import url('../fonts/Web/Extended/MTSExtended-Regular/MTSExtended-Regular.css');
+
+@import url('../fonts/Web/Text/MTSText-Black/MTSText-Black.css');
+@import url('../fonts/Web/Text/MTSText-Bold/MTSText-Bold.css');
+@import url('../fonts/Web/Text/MTSText-Medium/MTSText-Medium.css');
+@import url('../fonts/Web/Text/MTSText-Regular/MTSText-Regular.css');
+
+@import url('../fonts/Web/UltraExtended/MTSUltraExtended-Black/MTSUltraExtended-Black.css');
+@import url('../fonts/Web/UltraExtended/MTSUltraExtended-Bold/MTSUltraExtended-Bold.css');
+@import url('../fonts/Web/UltraExtended/MTSUltraExtended-Medium/MTSUltraExtended-Medium.css');
+@import url('../fonts/Web/UltraExtended/MTSUltraExtended-Regular/MTSUltraExtended-Regular.css');
+
+@import url('../fonts/Web/Wide/MTSWide-Black/MTSWide-Black.css');
+@import url('../fonts/Web/Wide/MTSWide-Bold/MTSWide-Bold.css');
+@import url('../fonts/Web/Wide/MTSWide-Medium/MTSWide-Medium.css');
+@import url('../fonts/Web/Wide/MTSWide-Regular/MTSWide-Regular.css');
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+    background: #fff;
+    overflow: hidden;
+  }
+  
+  .particles:after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    background: url(bg.png);
+    background-size: 128px;
+    animation: moveParticles 20s linear infinite;
+    opacity: 0.10;
+  }
+  
+@keyframes moveParticles {
+    100% { transform: translate(256px, 256px); }
+}
+
+/* Containers */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.header-box {
+    position: fixed;
+    top: 0;
+    box-shadow: 1px 0.125px 1px 1px rgb(0 0 0 / 40%);
+    text-align: center;
+
+    width: 100%;
+    background-color: white;
+    user-select: none;
+
+    /* border: 1px solid black;  */
+}
+.header-container {
+    display: inline-flex;
+    align-content: center;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    gap: 24px;
+    padding: 0px 15vw;
+
+    /* Debug Border */
+    /* border: 1px solid black;  */
+}
+
+.first-container {
+    align-content: center;
+    align-items: center;
+    vertical-align: middle;
+    text-align: left;
+    padding: 0px 15vw;
+    gap: 24px;
+    
+    /* border: 4px solid blueviolet; */
+}
+
+.map {
+    display: inline-block;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.353);
+    padding: 4px;
+    width: 100%;
+    flex: auto;
+}
+
+.param-button {
+    width: 100%;
+    height: 34px;
+    border-radius: 6px;
+
+    background-color: white;
+    color: black;
+
+    outline: none;
+    border: none;
+
+    font-family: "MTSCompactMedium";
+    font-size: 16px;
+
+    transition: ease-out background-color .3s;
+}
+
+.param-button:hover {
+    background-color: #ffc9d2;
+
+    font-family: "MTSWideMedium";
+    font-size: 18px;
+    border-radius: 6px;
+
+    transition: ease-in background-color .1s;
+}
+.weather-container {
+    width: 100%; 
+    height: 100%; 
+    text-align: center;
+    align-items: center;
+    border-radius: 20px;
+    background: linear-gradient(120deg, #62A7F6, #84b8f3);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.353);
+    padding: 0px 24px; 
+}
+
+.stats-container {
+    display: flex; gap: 12px; font-family: MTSWideRegular; justify-content: center; width: 100%;
+    font-size: 20px;
+}
+
+.conditions-container {
+    display: flex; 
+    gap: 12px;
+    color: white;
+    font-family: "MTSTextRegular";
+    vertical-align: middle;
+    align-items: center;
+}
+
+#active {
+    background-color: #FF0032;
+    border-radius: 6px;
+    color: white;
+
+    font-family: "MTSWideMedium";
+    font-size: 18px;
+
+    transition: ease-in background-color .3s;
+}
+

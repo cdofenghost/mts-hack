@@ -1,0 +1,44 @@
+.card-container {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(120deg, #F17E91, #FF0032);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.103);
+
+    border-radius: 20px;
+    padding: 4px;
+    margin: 0px 15vw;
+}
+
+.card {
+    width: 100%;
+    height: 300px;
+    border-radius: 16px;
+    text-align: center;
+    background-color: #fff;
+}
+
+#graphChart {
+    padding: 24px;
+}
+
+.heading {
+    text-align: left;
+    margin-bottom: 10px;
+    font-family: "MTSTextMedium";
+    font-size: 24px;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+
+    gap: 4px;
+    margin: 0px 15vw;
+    padding: 4px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.353);
+}

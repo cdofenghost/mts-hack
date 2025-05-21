@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTS Weather</title>
+
+    <link rel="icon" type="image/x-icon" href="./static/imgs/favicon.ico">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="stylesheet" href="./static/css/graph.css">
+    <script src="https://kit.fontawesome.com/330a6c34ff.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="particles"></div>
+    <header>
+        <div class="header-box">
+            <div class="header-container">
+                <img src="./static/imgs/mts_logo.png" style="width: 64px; height: 64px;">
+                <h1 style="font-family: MTSExtendedRegular;">MTS Weather</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="first-container" style="margin-top: 128px; color: white;">
+            <div class="weather-container" style="display: flex;">
+                <h1 id="cityName" style="text-align: left; font-family: MTSTextRegular; color: white;">Томск</h1>
+                <div class="stats-container" >
+                    <div class="temp" style="display: flex; align-items: center; gap: 8px">
+                        <i class="fa-solid fa-cloud fa-2x" id="condition-icon"></i>
+                        +16°
+                    </div>
+                    <div class="wind" style="display: flex; align-items: center; gap: 8px">
+                        <i class="fa-solid fa-wind fa-2x"></i>
+                        <div class="wind-stats">4,5м/c (СЗ)</div>
+                    </div>
+                    <div class="pressure" style="display: flex; align-items: center; gap: 8px">
+                        <i class="fa-solid fa-gauge fa-2x"></i>
+                        746 мм рт. ст.
+                    </div>
+                    <div class="humidity" style="display: flex; align-items: center; gap: 8px">
+                        <i class="fa-solid fa-droplet fa-2x"></i>
+                        27%
+                    </div>
+                </div>
+            </div>
+            <iframe class="map" src="https://yandex.ru/map-widget/v1/?um=constructor%3Afd9f9fb68db80c18adce21878a87da9ff32cef170c3ee273bf159797737e1fbf&amp;source=constructor" width="500" height="400" frameborder="0" style="margin-top: 12px;">
+            </iframe>
+        </div>
+        <h1 style="padding: 0px 15vw; font-family: MTSTextRegular; margin-top: 24px;">Прогноз погоды на 24 часа</h1>
+        <div class="legend">
+            <button class="param-button" id="active" onclick="updateChart('One')" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">One</button>
+            <button class="param-button" onclick="updateChart('Two')">Two</button>
+            <button class="param-button" onclick="updateChart('Three')">Three</button>
+            <button class="param-button" onclick="updateChart('Four')" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">Four</button>
+        </div>
+        <div class="card-container" style="margin-top: 12px;">
+            <div class="card">
+                <div class="chart-info">
+                    <div class="stock-price">
+                    </div>
+                </div>
+                <canvas id="graphChart"></canvas>
+            </div>
+        </div>
+        <div style="padding: 128px;">
+        </div>
+    </main>
+    <footer>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="charts.js"></script>
+</body>
+</html>
