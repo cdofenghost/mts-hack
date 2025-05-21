@@ -1,12 +1,16 @@
+from pathlib import Path
+
 from fastapi import FastAPI, File, UploadFile, APIRouter
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 import pandas as pd
 from .schemas import PredictRequest, WeatherData
 import io
 import os
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+
 router = APIRouter(
-    prefix="/api",
     tags=["API"])
 
 # only station+time
@@ -129,6 +133,4 @@ async def predict_with_full(request: WeatherData):
 
 @router.get("/index", response_class=HTMLResponse)
 async def get_index():
-    with open("frontend/index.html", "r", encoding="utf-8") as f:
-        html_content = f.read()
-    return HTMLResponse(content=html_content)
+    return FileResponse(FRONTEND_DIR / "index.html")
