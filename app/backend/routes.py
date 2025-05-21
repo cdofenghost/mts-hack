@@ -9,6 +9,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
+BACKEND_DIR = BASE_DIR / "backend"
 
 router = APIRouter(
     tags=["API"])
@@ -61,7 +62,7 @@ async def predict(request: PredictRequest):
     # ТУТ МОДЕЛЬ СОЗДАЕТ csv
 
     # Загружаем предсказания из файла
-    prediction_path = "backend/output/prediction.csv"
+    prediction_path = BACKEND_DIR / "output" / "prediction.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
@@ -103,7 +104,7 @@ async def predict_with_full(request: WeatherData):
     # ТУТ МОДЕЛЬ СОЗДАЕТ csv
 
     # Загружаем предсказания из файла
-    prediction_path = "backend/output/prediction.csv"
+    prediction_path = BACKEND_DIR / "output" / "prediction.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
