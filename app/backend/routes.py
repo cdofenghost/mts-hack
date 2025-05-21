@@ -68,22 +68,23 @@ async def predict_with_full():
 
     pred_df = pd.read_csv(prediction_path)
 
-    columns = [
-        "NO2",
-        "O3",
-        "H2S",
-        "CO",
-        "SO2",
-        "Температура, °С",
-        "Давление, мм рт. ст.",
-        "Влажность, %",
-        "Скорость ветра, м/с",
-        "Направление ветра, °"
-    ]
+    column_mapping = {
+        "NO2": "no2",
+        "O3": "o3",
+        "H2S": "h2s",
+        "CO": "co",
+        "SO2": "so2",
+        "Температура, °С": "temperature",
+        "Давление, мм рт. ст.": "pressure",
+        "Влажность, %": "humidity",
+        "Скорость ветра, м/с": "wind_speed",
+        "Направление ветра, °": "wind_direction"
+    }
+    columns = list(column_mapping.keys())
     # Группировка по station и time
     result = []
     for _, row in pred_df.iterrows():
-        entry = {col: row[col] for col in columns}
+        entry = {column_mapping[col]: row[col] for col in columns}
         result.append(entry)
 
     return {"predictions": result}
