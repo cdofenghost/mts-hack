@@ -1,10 +1,12 @@
 import csv
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 import httpx
 import asyncio
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 async def fetch_data():
     url = "https://sset.envdigital.mts.ru/api/v1/chart/data?form_data=%7B%22slice_id%22%3A84%7D&dashboard_id=63&force=true"
     headers = {
@@ -13,22 +15,26 @@ async def fetch_data():
         "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
         "X-CSRFToken": "IjJkNjVlZDM2ZDU4NDBlNGVhNjYzZDNlYzFlZWI1NDlmNTI4MmY1NDUi.aC1dXw.mlOGr0WG1eT4XQtY38zyd35G7LU",
         "Content-Type": "application/json",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "same-origin",
+        "Sec-Fetch-Site": "same-origin",
+        "Priority": "u=0",
         "Pragma": "no-cache",
-        "Cache-Control": "no-cache"
+        "Cache-Control": "no-cache",
     }
-
-    json_body = {
+    body = {
         "datasource": {"id": 90, "type": "table"},
         "force": True,
         "queries": [
             {
-                "time_range": "Last week",
+                "time_range": 'DATEADD(DATETIME("now"), -24, hour) : now',
                 "filters": [{"col": "time", "op": "TEMPORAL_RANGE", "val": "No filter"}],
                 "extras": {"having": "", "where": ""},
                 "applied_time_extras": {},
                 "columns": [
-                    "station", "time", "NO2", "O3", "H2S", "CO", "SO2", "Температура, °С",
-                    "davlenie", "vlazhnost", "Скорость ветра, м/с", "Направление ветра, °"
+                    "station", "time", "NO2", "O3", "H2S", "CO", "SO2",
+                    "Температура, °С", "davlenie", "vlazhnost",
+                    "Скорость ветра, м/с", "Направление ветра, °"
                 ],
                 "orderby": [],
                 "annotation_layers": [],
@@ -51,12 +57,14 @@ async def fetch_data():
             "groupby": [],
             "temporal_columns_lookup": {"time": True},
             "all_columns": [
-                "station", "time", "NO2", "O3", "H2S", "CO", "SO2", "Температура, °С",
-                "davlenie", "vlazhnost", "Скорость ветра, м/с", "Направление ветра, °"
+                "station", "time", "NO2", "O3", "H2S", "CO", "SO2",
+                "Температура, °С", "davlenie", "vlazhnost",
+                "Скорость ветра, м/с", "Направление ветра, °"
             ],
             "percent_metrics": [],
             "adhoc_filters": [
-                {"clause": "WHERE", "comparator": "No filter", "expressionType": "SIMPLE", "operator": "TEMPORAL_RANGE", "subject": "time"}
+                {"clause": "WHERE", "comparator": "No filter", "expressionType": "SIMPLE",
+                 "operator": "TEMPORAL_RANGE", "subject": "time"}
             ],
             "order_by_cols": [],
             "row_limit": 50000,
@@ -70,7 +78,7 @@ async def fetch_data():
             "conditional_formatting": [],
             "comparison_type": "values",
             "dashboards": [63],
-            "extra_form_data": {"time_range": "Last week"},
+            "extra_form_data": {"time_range": 'DATEADD(DATETIME("now"), -24, hour) : now'},
             "label_colors": {},
             "shared_label_colors": {},
             "extra_filters": [],
@@ -85,33 +93,31 @@ async def fetch_data():
     }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=json_body)
+        response = await client.post(url, headers=headers, json=body)
         response.raise_for_status()  # Если нужен выброс исключения при ошибке
         data = response.json()
         return data
 
 # Запуск
-if __name__ == "__main__":
-    result = asyncio.run(fetch_data())
-    with open("result.json", "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=4)
-
-    with open("result.json", "r", encoding="utf-8") as f:
-        result = json.load(f)
+async def get_data_parse():
+    result = await fetch_data()
+    # with open("result.json", "w", encoding="utf-8") as f:
+    #     json.dump(result, f, ensure_ascii=False, indent=4)
+    #
+    # with open("result.json", "r", encoding="utf-8") as f:
+    #     result = json.load(f)
 
     # print(json.dumps(result['result'][0]['data'], indent=4, ensure_ascii=False))
     result = result['result'][0]['data']
 
-    with open("output.csv", "w", newline="", encoding="utf-8") as csvfile:
+    with open(BASE_DIR / "backend"/ "output" / "output.csv", "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
-
         # Заголовок
         writer.writerow([
             "Пост мониторинга", "Период", "NO2", "O3", "H2S", "CO", "SO2",
             "Температура, °С", "Давление, мм рт. ст.", "Влажность, %",
             "Скорость ветра, м/с", "Направление ветра, °"
         ])
-
         # Данные
         for row in result:
             time_str = datetime.fromtimestamp(row["time"] / 1000, timezone.utc).strftime("%Y-%m-%d %H:%M:%S")

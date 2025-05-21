@@ -4,6 +4,7 @@ from fastapi import FastAPI, File, UploadFile, APIRouter
 from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 import pandas as pd
 from .schemas import PredictRequest, WeatherData
+from .parser import get_data_parse
 import io
 import os
 
@@ -52,83 +53,38 @@ async def predict_from_csv(file: UploadFile = File(...)):
         })
 
     return {"predictions": result}
-    
-# 7 input
-@router.post("/predict")
-async def predict(request: PredictRequest):
-    station = request.station
-    time = request.time
-
-    # ТУТ МОДЕЛЬ СОЗДАЕТ csv
-
-    # Загружаем предсказания из файла
-    prediction_path = BACKEND_DIR / "output" / "prediction.csv"
-    if not os.path.exists(prediction_path):
-        return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
-
-    pred_df = pd.read_csv(prediction_path)
-
-    # Фильтруем предсказания по station и time (time — начальное время)
-    # Предполагается, что prediction.csv содержит 24 часа вперед для каждой пары station + time
-
-    # Группировка по station и time
-    result = []
-    grouped = pred_df.groupby(["station", "time"])  # maybe delete
-
-    for (station, start_time), group in grouped:
-        rows = group.reset_index(drop=True)
-
-        result.append({
-            "station": station,
-            "time": start_time,
-            "temperature": rows["temperature"].tolist(),
-            "pressure": rows["pressure"].tolist(),
-            "humidity": rows["humidity"].tolist(),
-            "wind_speed": rows["wind speed"].tolist(),
-            "wind_direction": rows["wind direction"].tolist(),
-        })
-
-    return {"predictions": result}
 
 # full weather data
 @router.post("/predict_with_full")
-async def predict_with_full(request: WeatherData):
-    station = request.station
-    time = request.time
-    temperature = request.temperature
-    pressure = request.pressure
-    humidity = request.humidity
-    wind_speed = request.wind_speed
-    wind_direction = request.wind_direction
+async def predict_with_full():
+    await get_data_parse()
 
     # ТУТ МОДЕЛЬ СОЗДАЕТ csv
 
     # Загружаем предсказания из файла
-    prediction_path = BACKEND_DIR / "output" / "prediction.csv"
+    prediction_path = BACKEND_DIR / "output" / "output.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
     pred_df = pd.read_csv(prediction_path)
 
-    # Фильтруем предсказания по station и time (time — начальное время)
-    # Предполагается, что prediction.csv содержит 24 часа вперед для каждой пары station + time
-
+    columns = [
+        "NO2",
+        "O3",
+        "H2S",
+        "CO",
+        "SO2",
+        "Температура, °С",
+        "Давление, мм рт. ст.",
+        "Влажность, %",
+        "Скорость ветра, м/с",
+        "Направление ветра, °"
+    ]
     # Группировка по station и time
     result = []
-    grouped = pred_df.groupby(["station", "time"])  # maybe delete
-
-    for (station, start_time), group in grouped:
-        rows = group.reset_index(drop=True)
-
-        result.append({
-            "station": station,
-            "time": start_time,
-            "temperature": rows["temperature"].tolist(),
-            "pressure": rows["pressure"].tolist(),
-            "humidity": rows["humidity"].tolist(),
-            "wind_speed": rows["wind speed"].tolist(),
-            "wind_direction": rows["wind direction"].tolist(),
-        })
+    for _, row in pred_df.iterrows():
+        entry = {col: row[col] for col in columns}
+        result.append(entry)
 
     return {"predictions": result}
 
