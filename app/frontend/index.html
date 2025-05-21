@@ -48,10 +48,10 @@
         </div>
         <h1 style="padding: 0px 15vw; font-family: MTSTextRegular; margin-top: 24px;">Прогноз погоды на 24 часа</h1>
         <div class="legend">
-            <button class="param-button" id="active" onclick="updateChart('One')" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">One</button>
-            <button class="param-button" onclick="updateChart('Two')">Two</button>
-            <button class="param-button" onclick="updateChart('Three')">Three</button>
-            <button class="param-button" onclick="updateChart('Four')" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">Four</button>
+            <button class="param-button" id="active" onclick="updateChart('Humidity')" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">💧 Влажность</button>
+            <button class="param-button" onclick="updateChart('Pressure')">⏲️ Давление</button>
+            <button class="param-button" onclick="updateChart('Temperature')">🌡️ Температура</button>
+            <button class="param-button" onclick="updateChart('WindDirection')" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">🧭 Направление ветра</button>
         </div>
         <div class="card-container" style="margin-top: 12px;">
             <div class="card">
@@ -70,5 +70,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/static/charts.js"></script>
+    <script src="/static/preload.js"></script>
 </body>
 </html>
