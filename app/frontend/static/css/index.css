@@ -71,6 +71,7 @@ body, html {
 
     /* border: 1px solid black;  */
 }
+
 .header-container {
     display: inline-flex;
     align-content: center;
@@ -107,6 +108,7 @@ body, html {
 
 .param-button {
     width: 100%;
+    flex: 1 1 300px;
     height: 34px;
     border-radius: 6px;
 
@@ -143,7 +145,11 @@ body, html {
 }
 
 .stats-container {
-    display: flex; gap: 12px; font-family: MTSWideRegular; justify-content: center; width: 100%;
+    display: flex; 
+    gap: 48px; 
+    font-family: MTSWideRegular; 
+    justify-content: center; 
+    width: 100%;
     font-size: 20px;
 }
 
@@ -167,3 +173,17 @@ body, html {
     transition: ease-in background-color .3s;
 }
 
+.footer-box {
+    text-align: center; 
+    padding: 12px;
+    background-color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+
+    margin-top: 48px;
+
+    border: 2px solid #FF0032;
+    box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.1);
+
+    font-family: "MTSExtendedMedium";
+}

@@ -23,23 +23,23 @@
     <main>
         <div class="first-container" style="margin-top: 128px; color: white;">
             <div class="weather-container" style="display: flex;">
-                <h1 id="cityName" style="text-align: left; font-family: MTSTextRegular; color: white;">Томск</h1>
+                <h1 id="cityName" style="text-align: left; font-family: MTSTextRegular; color: white;">Новочебоксарск</h1>
                 <div class="stats-container" >
                     <div class="temp" style="display: flex; align-items: center; gap: 8px">
                         <i class="fa-solid fa-cloud fa-2x" id="condition-icon"></i>
-                        +16°
+                        <div id="tempValue">+16°</div>
                     </div>
                     <div class="wind" style="display: flex; align-items: center; gap: 8px">
                         <i class="fa-solid fa-wind fa-2x"></i>
-                        <div class="wind-stats">4,5м/c (СЗ)</div>
+                        <div id="windStats">4,5м/c (СЗ)</div>
                     </div>
                     <div class="pressure" style="display: flex; align-items: center; gap: 8px">
                         <i class="fa-solid fa-gauge fa-2x"></i>
-                        746 мм рт. ст.
+                        <div id="pressureValue">746 мм рт. ст.</div>
                     </div>
                     <div class="humidity" style="display: flex; align-items: center; gap: 8px">
                         <i class="fa-solid fa-droplet fa-2x"></i>
-                        27%
+                        <div id="humidityValue">27%</div>
                     </div>
                 </div>
             </div>
@@ -52,8 +52,13 @@
             <button class="param-button" onclick="updateChart('Pressure')">⏲️ Давление</button>
             <button class="param-button" onclick="updateChart('Temperature')">🌡️ Температура</button>
             <button class="param-button" onclick="updateChart('WindDirection')" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">🧭 Направление ветра</button>
+            <button class="param-button" onclick="updateChart('WindSpeed')">💨 Скорость ветра</button>
+            <button class="param-button" onclick="updateChart('CO')">🏭 CO</button>
+            <button class="param-button" onclick="updateChart('NO2')">⚗️ NO2</button>
+            <button class="param-button" onclick="updateChart('H2S')">🧪 H2S</button>
+            <button class="param-button" onclick="updateChart('SO2')">🏭 SO2</button>
         </div>
-        <div class="card-container" style="margin-top: 12px;">
+        <div class="card-container" style="margin-top: 12px;"> 
             <div class="card">
                 <div class="chart-info">
                     <div class="stock-price">
@@ -62,10 +67,9 @@
                 <canvas id="graphChart"></canvas>
             </div>
         </div>
-        <div style="padding: 128px;">
-        </div>
     </main>
     <footer>
+        <div class="footer-box"><i>© Вайб Кодеры, 2025</i></div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
