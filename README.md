@@ -13,7 +13,7 @@ git clone https://github.com/cdofenghost/mts-hack
 ```
 Перейти в директорию
 ```bash
-cd weather-predict
+cd mts-hack
 ```
 Собрать докер-образ
 
