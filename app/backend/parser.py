@@ -1,13 +1,20 @@
 import csv
-import json
+# import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-import httpx
-import asyncio
+import requests_cache
+import requests
+
+# Установка кэша на 1 час
+requests_cache.install_cache(
+    'http_cache',
+    expire_after=3600,
+    allowable_methods=('GET', 'POST')
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-async def fetch_data():
+def fetch_data():
     url = "https://sset.envdigital.mts.ru/api/v1/chart/data?form_data=%7B%22slice_id%22%3A84%7D&dashboard_id=63&force=true"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0",
@@ -19,8 +26,6 @@ async def fetch_data():
         "Sec-Fetch-Mode": "same-origin",
         "Sec-Fetch-Site": "same-origin",
         "Priority": "u=0",
-        "Pragma": "no-cache",
-        "Cache-Control": "no-cache",
     }
     body = {
         "datasource": {"id": 90, "type": "table"},
@@ -92,15 +97,19 @@ async def fetch_data():
         "result_type": "full"
     }
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=body)
-        response.raise_for_status()  # Если нужен выброс исключения при ошибке
-        data = response.json()
-        return data
+    response = requests.post(url, headers=headers, json=body)
+    print(response.from_cache) 
+    data = response.json()
+    return data
+    # async with httpx.AsyncClient() as client:
+    #     response = await client.post(url, headers=headers, json=body)
+    #     response.raise_for_status()  # Если нужен выброс исключения при ошибке
+    #     data = response.json()
+    #     return data
 
 # Запуск
-async def get_data_parse():
-    result = await fetch_data()
+def get_data_parse():
+    result = fetch_data()
     # with open("result.json", "w", encoding="utf-8") as f:
     #     json.dump(result, f, ensure_ascii=False, indent=4)
     #
@@ -126,3 +135,8 @@ async def get_data_parse():
                 row["SO2"], row["Температура, °С"], row["davlenie"], row["vlazhnost"],
                 row["Скорость ветра, м/с"], row["Направление ветра, °"]
             ])
+
+if __name__ == "__main__":
+    get_data_parse()
+    get_data_parse()
+    get_data_parse()
