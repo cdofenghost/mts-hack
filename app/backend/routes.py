@@ -56,8 +56,8 @@ async def predict_from_csv(file: UploadFile = File(...)):
 
 # full weather data
 @router.post("/predict_with_full")
-async def predict_with_full():
-    await get_data_parse()
+def predict_with_full():
+    get_data_parse()
 
     # ТУТ МОДЕЛЬ СОЗДАЕТ csv
 
