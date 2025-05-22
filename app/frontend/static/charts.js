@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     temp.textContent = `${Math.round(temperatures[0])}°`;
     humi.textContent = Math.round(humidities[0]) + "%";
     press.textContent = `${Math.round(pressures[0])} мм рт. ст.`;
-    windStats.textContent = `${Math.round(windSpeeds[0])}м/c, (${Math.round(windDirections[0])})`;
+    windStats.textContent = `${Math.round(windSpeeds[0])}м/c, (${Math.round(windDirections[0])}°)`;
 
   }
   catch { ; }

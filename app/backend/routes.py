@@ -7,6 +7,7 @@ from .schemas import PredictRequest, WeatherData
 from .parser import get_data_parse
 import io
 import os
+from app.ml.ml import analyze
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -15,65 +16,28 @@ BACKEND_DIR = BASE_DIR / "backend"
 router = APIRouter(
     tags=["API"])
 
-# only station+time
-@router.post("/predict_from_csv")
-async def predict_from_csv(file: UploadFile = File(...)):
-    # Считать CSV из запроса
-    contents = await file.read()
-    test_df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
-
-    # ТУТ МОДЕЛЬ СОЗДАЕТ csv
-
-    # Сохранить файл, чтобы передать ML-команде (если надо)
-    test_df.to_csv("backend/input/test.csv", index=False)
-
-    # Предполагаем, что ML-команда возвращает prediction.csv в формате:
-    # station,time,temperature,pressure,humidity,wind speed,wind direction
-    prediction_path = "./output/prediction.csv"
+@router.get("/download_csv")
+async def download_csv() -> FileResponse:
+    # Загружаем предсказания из файла
+    prediction_path = BACKEND_DIR / "prediction.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
-    pred_df = pd.read_csv(prediction_path)
+    return FileResponse(path=prediction_path, filename="prediction.csv")
 
-    # Группировка по station и time
-    result = []
-    grouped = pred_df.groupby(["station", "time"]) # maybe delete
 
-    for (station, start_time), group in grouped:
-        rows = group.reset_index(drop=True)
-
-        result.append({
-            "station": station,
-            "time": start_time,
-            "temperature": rows["temperature"].tolist(),
-            "pressure": rows["pressure"].tolist(),
-            "humidity": rows["humidity"].tolist(),
-            "wind_speed": rows["wind speed"].tolist(),
-            "wind_direction": rows["wind direction"].tolist(),
-        })
-
-    return {"predictions": result}
-
-# full weather data
 @router.post("/predict_with_full")
 def predict_with_full():
     get_data_parse()
-
-    # ТУТ МОДЕЛЬ СОЗДАЕТ csv
-
+    analyze(BASE_DIR / "backend" / "output" / "output.csv")
     # Загружаем предсказания из файла
-    prediction_path = BACKEND_DIR / "output" / "output.csv"
+    prediction_path = BACKEND_DIR / "prediction.csv"
     if not os.path.exists(prediction_path):
         return JSONResponse(status_code=500, content={"error": "Prediction file not found"})
 
     pred_df = pd.read_csv(prediction_path)
 
     column_mapping = {
-        "NO2": "no2",
-        "O3": "o3",
-        "H2S": "h2s",
-        "CO": "co",
-        "SO2": "so2",
         "Температура, °С": "temperature",
         "Давление, мм рт. ст.": "pressure",
         "Влажность, %": "humidity",
@@ -81,7 +45,6 @@ def predict_with_full():
         "Направление ветра, °": "wind_direction"
     }
     columns = list(column_mapping.keys())
-    # Группировка по station и time
     result = []
     for _, row in pred_df.iterrows():
         entry = {column_mapping[col]: row[col] for col in columns}

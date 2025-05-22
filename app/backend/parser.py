@@ -9,7 +9,7 @@ import requests
 # Установка кэша на 1 час
 requests_cache.install_cache(
     'http_cache',
-    expire_after=3600,
+    expire_after=600,
     allowable_methods=('GET', 'POST')
 )
 
