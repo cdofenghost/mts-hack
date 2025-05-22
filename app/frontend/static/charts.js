@@ -16,10 +16,10 @@ let temperatures = [];
 let pressures = [];
 let windSpeeds = [];
 let windDirections = [];
-let COs = [];
-let SO2s = [];
-let H2Ss = [];
-let NO2s = [];
+// let COs = [];
+// let SO2s = [];
+// let H2Ss = [];
+// let NO2s = [];
 let datasets = null;
 
 let chart = null;
@@ -58,10 +58,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         temperatures.push(predictions.predictions[i].temperature);
         windDirections.push(predictions.predictions[i].wind_direction);
         windSpeeds.push(predictions.predictions[i].wind_speed);
-        NO2s.push(predictions.predictions[i].no2);
-        COs.push(predictions.predictions[i].co);
-        H2Ss.push(predictions.predictions[i].h2s);
-        SO2s.push(predictions.predictions[i].so2);
+        // NO2s.push(predictions.predictions[i].no2);
+        // COs.push(predictions.predictions[i].co);
+        // H2Ss.push(predictions.predictions[i].h2s);
+        // SO2s.push(predictions.predictions[i].so2);
     }
 
     chart = new Chart(ctx, {
@@ -103,6 +103,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             },
             scales: {
                 x: {
+                    title: {
+                        display: true,
+                        text: 'Временная шкала (в будущее)',
+                        font: {
+                        size: 14,
+                        weight: 'bold'
+                        },
+                        color: '#666'
+                    },
                     grid: {
                         drawOnChartArea: false,
                         drawBorder: true,
@@ -116,6 +125,15 @@ document.addEventListener('DOMContentLoaded', async function() {
                     }
                 },
                 y: {
+                    title: {
+                        display: true,
+                        text: 'RH, %',
+                        font: {
+                        size: 14,
+                        weight: 'bold'
+                        },
+                        color: '#666'
+                    },
                     grid: {
                         drawOnChartArea: false,
                         drawBorder: true,
@@ -133,41 +151,41 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     datasets = {
         Humidity: {
-            label: "Влажность",
+            label: "RH, %",
             data: humidities,
         },
         Pressure: {
-            label: "Давление",
+            label: "P, мм рт. ст.",
             data: pressures,
         },
         Temperature: {
-            label: "Температура",
+            label: "T, C°",
             data: temperatures,
         },
         WindDirection: {
-            label: "Направление ветра",
+            label: "Направление ветра, °",
             data: windDirections,
         },
         WindSpeed: {
-            label: "Скорость ветра",
+            label: "Скорость ветра, м/c",
             data: windSpeeds,
         },
-        CO: {
-            label: "Давление",
-            data: COs,
-        },
-        NO2: {
-            label: "Давление",
-            data: NO2s,
-        },
-        H2S: {
-            label: "Температура",
-            data: H2Ss,
-        },
-        SO2: {
-            label: "Направление ветра",
-            data: SO2s,
-        },
+        // CO: {
+        //     label: "Давление",
+        //     data: COs,
+        // },
+        // NO2: {
+        //     label: "Давление",
+        //     data: NO2s,
+        // },
+        // H2S: {
+        //     label: "Температура",
+        //     data: H2Ss,
+        // },
+        // SO2: {
+        //     label: "Направление ветра",
+        //     data: SO2s,
+        // },
     };
 
     temp.textContent = `${Math.round(temperatures[0])}°`;
@@ -184,6 +202,7 @@ function updateChart(company) {
 
     chart.data.datasets[0].label = label;
     chart.data.datasets[0].data = data;
+    chart.options.scales.y.title.text = label;
     chart.update();
 
     document.querySelectorAll(".legend button").forEach(item => {

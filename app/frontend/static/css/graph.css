@@ -35,7 +35,7 @@
 .legend {
     display: flex;
     flex-wrap: wrap;
-
+    background-color: white;
     gap: 4px;
     margin: 0px 15vw;
     padding: 4px;
