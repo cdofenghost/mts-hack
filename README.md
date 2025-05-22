@@ -9,11 +9,11 @@
 Для начала клонировать репозиторий 
 
 ```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
+git clone https://github.com/cdofenghost/mts-hack
 ```
 Перейти в директорию
 ```bash
-cd my-full-stack
+cd weather-predict
 ```
 Собрать докер-образ
 
